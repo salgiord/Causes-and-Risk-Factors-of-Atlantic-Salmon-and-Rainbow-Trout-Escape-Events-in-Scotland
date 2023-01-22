@@ -1,0 +1,57 @@
+
+labs <- c("Atlantic salmon", "Rainbow trout")
+names(labs) <- c("sal_esc", "trout_esc")
+
+salmon_plot <- ggplot(data = df_long[df_long$group %in% "sal_esc", ], aes(x = as.integer(year))) +
+  geom_bar(aes(y = no_cases), stat = "identity", alpha = 0.5, fill = "lightgrey") +
+  geom_point(aes(y = (no_esc/1000)*11/405), size = 3) +
+  geom_line(aes(y = (no_esc/1000)*11/405), size = 0.75) +
+  scale_x_continuous(breaks=seq(2010, 2022, 3)) +
+  scale_y_continuous(sec.axis = sec_axis(~.*405/11, name = "Escaped fish [\u27151000]"), limits = c(0,13))+
+  labs(x= "Year",    
+       y= "Escape incidents reported") +
+  theme_tq() +
+  theme(text = element_text(family = "Arial",  size=14), axis.text = element_text(size = 14, family = "Arial", colour = "black")) +
+  theme(strip.text = element_text(size=14, family ="Arial"),
+        legend.key.size = unit(1, 'cm'), #change legend key size
+        legend.title = element_blank(), #change legend title font size
+        legend.text = element_text(size=14),
+        legend.position = c(0.8, 0.8),
+        axis.title = element_text(colour = "black"), 
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +  
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  facet_wrap(~ group, scales = "free_y", 
+             labeller = labeller(group = labs))
+
+trout_plot <- ggplot(data = df_long[df_long$group %in% "trout_esc", ], aes(x = as.integer(year))) +
+  geom_bar(aes(y = no_cases), stat = "identity", alpha = 0.5, fill = "lightgrey") +
+  geom_point(aes(y = (no_esc/1000)*5/38), size = 3) +
+  geom_line(aes(y = (no_esc/1000)*5/38), size = 0.75) +
+  scale_x_continuous(breaks=seq(2010, 2022, 3)) +
+  scale_y_continuous(sec.axis = sec_axis(~.*38/5, name = "Escaped fish [\u27151000]"), limits = c(0,6))+
+  labs(x= "Year",    
+       y= "Escape incidents reported") +
+  theme_tq() +
+  theme(text = element_text(family = "Arial",  size=14), axis.text = element_text(size = 14, family = "Arial", colour = "black")) +
+  theme(strip.text = element_text(size=14, family ="Arial"),
+        legend.key.size = unit(1, 'cm'), #change legend key size
+        legend.title = element_blank(), #change legend title font size
+        legend.text = element_text(size=14),
+        legend.position = c(0.8, 0.8),
+        axis.title = element_text(colour = "black"), 
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +  
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  facet_wrap(~ group, scales = "free_y", 
+             labeller = labeller(group = labs))
+
+y_left_label <-  textGrob("Escape incidents reported",  rot = 90, gp = gpar(fontsize = 14, col="black", family = "Arial"))
+y_right_label <-  textGrob("Escaped fish [\u27151000]", rot = 90, gp = gpar(fontsize = 14, col="black", family = "Arial", rot = 90))
+year_label <- textGrob("Year", gp = gpar(fontsize = 14, col="black", family = "Arial"))
+grid.arrange(salmon_plot, trout_plot, ncol = 2, bottom = year_label, left = y_left_label, right = y_right_label)
+
+ggsave(filename = "escape incidents and escaped fish plots from 2010.tiff", grid.arrange(salmon_plot, trout_plot, ncol=2,  bottom = year_label, left = y_left_label, right=y_right_label),
+       width = 1180, height = 720, scale = 2, units = "px", device='tiff', dpi = 300)
