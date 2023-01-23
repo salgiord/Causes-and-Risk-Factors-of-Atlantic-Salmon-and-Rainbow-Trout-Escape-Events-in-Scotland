@@ -1,0 +1,25 @@
+if (!require("ggplot2")) install.packages("ggplot2")
+
+labs2 <- c("Atlantic salmon", "Rainbow trout")
+names(labs2) <- c("salmon", "trout")
+
+ggplot(data = esc_biomass, aes(x = as.integer(year), y = percent.escape.biomass)) +
+  geom_point(size = 3) +
+  geom_line(size = 0.75) + 
+  scale_x_continuous(breaks=seq(2010, 2020, 2)) +
+  labs(x= "Year",    
+       y= "Escapees biomass/Produced biomass [%]") +
+  theme_tq() +
+  theme(text = element_text(family = "Arial",  size=14), axis.text = element_text(size = 14, family = "Arial", colour = "black")) +
+  theme(strip.text = element_text(size=14, family ="Arial"),
+        legend.key.size = unit(1, 'cm'), #change legend key size
+        legend.title = element_blank(), #change legend title font size
+        legend.text = element_text(size=14),
+        legend.position = c(0.8, 0.8),
+        axis.title = element_text(colour = "black")) +  
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  facet_wrap(~ Species, scales = "free" ,
+             labeller = labeller(Species = labs2))
+
+ggsave(filename = "escaped biomass percentage per year from 2010.tiff", width = 1080, height = 720, scale = 2, units = "px", device='tiff', dpi = 300)
