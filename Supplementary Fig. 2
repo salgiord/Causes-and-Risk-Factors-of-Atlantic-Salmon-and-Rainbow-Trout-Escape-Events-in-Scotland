@@ -1,0 +1,20 @@
+
+
+corrplota <- rcorr(as.matrix(df1))
+corrplotb <- rcorr(as.matrix(df2))
+
+tiff(height = 720, width = 1180, file = "two_corrplot.tiff", res = 300, pointsize = 5)
+
+par(mfrow=c(1,2))
+
+corrplot::corrplot(corrplota$r, p.mat = corrplota$P, method = 'number', diag = F, type = 'lower',
+                            sig.level = c(0.001, 0.01, 0.05), pch.cex = 1,
+                            insig = 'blank', pch.col = 'black', order = 'hclust', tl.col = 'black', col = COL2('RdBu', 10),
+                            tl.srt = 45,  cl.ratio = 0.2)
+                            
+corrplot::corrplot(corrplotb$r, p.mat = corrplotb$P, method = 'number', diag = F, type = 'lower',
+         sig.level = c(0.001, 0.01, 0.05), pch.cex = 1,
+         insig = 'blank', pch.col = 'black', order = 'hclust', tl.col = 'black', col = COL2('RdBu', 10),
+         tl.srt = 45,  cl.ratio = 0.2)
+         
+dev.off()
