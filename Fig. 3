@@ -1,4 +1,9 @@
+if (!require("ggplot2")) install.packages("ggplot2")
+if (!require("gridExtra")) install.packages("gridExtra")
+if (!require("grid")) install.packages("grid")
 
+cols <- c("CHA" = "darkorange", "EQD" = "cornflowerblue", "EQW" = "darkgreen", "HUM" = "deeppink3",
+          "EQI" = "darkslateblue", "PRD" = "darkgoldenrod1", "UNK" = "grey", "WTH" = "salmon")
 
 p3 <- ggplot(fish[fish$species %in% "Atlantic Salmon", ],
              aes(x=immediate,  fill = underlying)) +
@@ -26,7 +31,7 @@ legend <- get_legend(p3)
 
 p3 <- p3 + theme(legend.position = "none")
 
-p4 = ggplot(fish[fish$species %in% "Rainbow Trout", ],
+p4 <- ggplot(fish[fish$species %in% "Rainbow Trout", ],
             aes(x=immediate,  fill = underlying)) +
   geom_bar(stat="count")+
   scale_fill_manual(name = "Underlying cause", values = cols) +
@@ -48,7 +53,6 @@ p4 = ggplot(fish[fish$species %in% "Rainbow Trout", ],
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
   facet_wrap(~ species, scales = "free",
              labeller = labeller(species = labs3))
-p4
 
 bottom <- textGrob("Escape incidents", gp = gpar(fontsize = 14, col="black", family = "Arial"))
 
