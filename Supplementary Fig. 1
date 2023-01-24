@@ -1,0 +1,21 @@
+histogram_fish <- ggplot(dataframe[which(dataframe$numb_escaped>0),],
+       aes(x = numb_escaped/1000)) +
+  geom_histogram( fill = "lightgreen", color = "black", alpha = 0.5, binwidth = 5)  +
+  theme_tq() +
+  theme(text = element_text(family = "Arial",  size=14), axis.text = element_text(size = 14, family = "Arial", colour = "black")) +
+  theme(strip.text = element_text(size=14, family ="Arial"),
+        axis.title = element_text(colour = "black")) +  
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  geom_vline(aes(xintercept = median(numb_escaped)/1000,
+                 col = "red"),
+             lwd = 1.5, linetype='longdash',   show.legend = F) +
+  labs(x = "Escaped fish [×1000]", y = "Frequency") +
+  annotate("text",                        # Add text for median
+           x = 90,
+           y = 40,
+           label = paste("Median = 2981"),
+           col = "red",
+           size = 8)
+           
+ggsave(filename = "histogram escaped fish.tiff", plot = histogram_fish,width = 1180, height = 720, scale = 2, units = "px", device='tiff', dpi = 300)
