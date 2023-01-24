@@ -2,6 +2,9 @@ if (!require("ggplot2")) install.packages("ggplot2")
 if (!require("gridExtra")) install.packages("gridExtra")
 if (!require("grid")) install.packages("grid")
 
+labs3 <- c("Atlantic salmon", "Rainbow trout")
+names(labs3) <- c("Atlantic Salmon", "Rainbow Trout")
+
 cols <- c("CHA" = "darkorange", "EQD" = "cornflowerblue", "EQW" = "darkgreen", "HUM" = "deeppink3",
           "EQI" = "darkslateblue", "PRD" = "darkgoldenrod1", "UNK" = "grey", "WTH" = "salmon")
 
