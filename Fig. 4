@@ -1,4 +1,6 @@
-
+if (!require("ggplot2")) install.packages("ggplot2")
+if (!require("gridExtra")) install.packages("gridExtra")
+if (!require("grid")) install.packages("grid")
 
 labs3 <- c("Atlantic salmon", "Rainbow trout")
 names(labs3) <- c("Atlantic Salmon", "Rainbow Trout")
