@@ -1,4 +1,5 @@
-
+if (!require("Hmisc")) install.packages("Hmisc")
+if (!require("corrplot")) install.packages("corrplot")
 
 corrplota <- rcorr(as.matrix(df1))
 corrplotb <- rcorr(as.matrix(df2))
