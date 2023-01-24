@@ -1,0 +1,61 @@
+
+
+labs3 <- c("Atlantic salmon", "Rainbow trout")
+names(labs3) <- c("Atlantic Salmon", "Rainbow Trout")
+
+cols <- c("CHA" = "darkorange", "EQD" = "cornflowerblue", "EQW" = "darkgreen", "HUM" = "deeppink3",
+          "EQI" = "darkslateblue", "PRD" = "darkgoldenrod1", "UNK" = "grey", "WTH" = "salmon")
+
+p1 <-  ggplot(fish[fish$species %in% "Atlantic Salmon", ],
+            aes(x=reorder(immediate,final_number, FUN = sum), y=final_number/1000, fill = underlying)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(name = "Underlying cause", values = cols) +
+  coord_flip()  +
+  labs(x= "Immediate cause of escape",    
+       y= "Fish escaped") +
+  theme_tq() +
+  theme(text = element_text(family = "Arial",  size=14), axis.text = element_text(size = 14, family = "Arial", colour = "black")) +
+  theme(strip.text = element_text(size=14, family ="Arial"),
+        legend.key.size = unit(1, 'cm'), #change legend key size
+        legend.title = element_text("Underlying cause"), #change legend title font size
+        legend.text = element_text(size=14),
+        legend.position = "none",
+        axis.title = element_text(colour = "black"),
+        axis.title.x = element_blank()) +  
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  facet_wrap(~ species, scales = "free",
+             labeller = labeller(species = labs3))
+
+p2 <-  ggplot(fish[fish$species %in% "Rainbow Trout", ],
+              aes(x=reorder(immediate,final_number, FUN = sum), y=final_number/1000, fill = underlying)) +
+  geom_bar(stat = "identity")+
+  scale_fill_manual(name = "Underlying cause", values = cols) +
+  coord_flip()  +
+  labs(x= "Immediate cause of escape",    
+       y= "Fish escaped") +
+  theme_tq() +
+  theme(text = element_text(family = "Arial",  size=14), axis.text = element_text(size = 14, family = "Arial", colour = "black")) +
+  theme(strip.text = element_text(size=14, family ="Arial"),
+        legend.key.size = unit(1, 'cm'), #change legend key size
+        legend.title = element_text("Underlying cause", colour = "black",  size=14), #change legend title font size
+        legend.text = element_text(size=14, colour = "black"),
+        legend.position = "right",
+        axis.title = element_text(colour = "black"),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) +  
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) +
+  facet_wrap(~ species, scales = "free",
+             labeller = labeller(species = labs3))
+
+legend <- get_legend(p2)
+
+p2 <- p2 + theme(legend.position = "none")
+
+bottom <- textGrob("Escaped fish [\u27151000]", gp = gpar(fontsize = 14, col="black", family = "Arial"))
+
+grid.arrange(p1, p2, legend, ncol=3, widths=c(2.1, 2.1, 1), bottom = bottom)
+
+ggsave(filename = "escaped fish by cause 2010.tiff", grid.arrange(p1, p2, legend, ncol=3, widths=c(2.1, 2.1, 1), bottom = bottom),
+       width = 1180, height = 720, scale = 2, units = "px", device='tiff', dpi = 300)
