@@ -1,0 +1,11 @@
+mod_severe_full <- glm(severe ~ grey_seal +
+                         harb_seal +
+                         max_gust_msec +
+                         fetch, family="binomial", data = new_severe)
+summary(mod_severe_full) 
+
+back_severe<- step(mod_severe_full)
+formula(back_severe)
+summary(back_severe)
+exp(confint(back_severe))
+exp(coef(back_severe))
