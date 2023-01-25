@@ -1,0 +1,13 @@
+mod_esc_full <- glm(escape ~
+                      max_gust_msec +
+                      fetch +
+                      harb_seal +
+                      grey_seal +
+                      remot_num +
+                      max_gust,
+                      family="binomial", data = new_esc)
+summary(mod_esc_full)
+            
+back_esc<- step(mod_esc_full)
+formula(back_esc)
+summary(back_esc)                    
