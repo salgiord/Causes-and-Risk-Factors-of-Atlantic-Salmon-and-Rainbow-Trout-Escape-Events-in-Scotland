@@ -1,7 +1,19 @@
-
+if (!require("ggplot2")) install.packages("ggplot2")
+if (!require("plotROC")) install.packages("plotROC")
 
 probFull <- predict(mod_severe_full, new_severe, type = "response")
+predictFull <- prediction(probFull, severe_glm$severe)
+perfFull <- ROCR::performance(predictFull, measure = "tpr", x.measure = "fpr")
+
 probGust <- predict(back_severe, new_severe, type = "response")
+predictGust <- prediction(probGust, severe_glm$severe)
+perfGust <- ROCR::performance(predictGust, measure = "tpr", x.measure = "fpr")
+
+AUC <- ROCR::performance(predictFull, measure = "auc")
+AUCgust <- ROCR::performance(predictGust, measure = "auc")
+
+AUC@y.values
+AUCgust@y.values
 
 df1 <- data.frame(Class = new_severe$severe,Prob = probGust)
 df2 <- data.frame(Class = new_severe$severe,Prob = probFull)
