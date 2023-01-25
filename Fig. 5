@@ -1,0 +1,33 @@
+
+
+probFull <- predict(mod_severe_full, new_severe, type = "response")
+probGust <- predict(back_severe, new_severe, type = "response")
+
+df1 <- data.frame(Class = new_severe$severe,Prob = probGust)
+df2 <- data.frame(Class = new_severe$severe,Prob = probFull)
+df1 <- df1 %>%
+  mutate(Model = "Final model, AUC = 0.739")
+df2 <- df2 %>%
+  mutate(Model = "Start model, AUC = 0.735")
+joint_df <-rbind(df1, df2)
+
+ggroc <- ggplot(data = joint_df, aes(m = Prob, d = Class, color = Model), n.cuts = 0, lineend = "square") +
+  geom_roc(n.cuts = 0,  size = 1.25) + 
+  style_roc()+
+  theme_presentation() +
+  scale_color_manual(values = c("darkblue", "red")) +
+theme(text = element_text(family = "Arial",  size=14),
+      axis.text = element_text(size = 14, family = "Arial", colour = "black")) +
+  theme(strip.text = element_text(size=14, family ="Arial"),
+        axis.title = element_text(colour = "black")) +  
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line = element_line(colour = "black"),
+        legend.key.size = unit(1, 'cm'), #change legend key size
+        legend.title = element_blank(), #change legend title font size
+        legend.text = element_text(size=14, colour = "black"),
+        legend.position =  c(.60,.150)) +
+  geom_abline(colour = "black", size = 1, linetype = "longdash")+
+  theme(aspect.ratio=1)
+
+ggsave(filename = "roc ggplot.tiff", plot = ggroc, width = 1180, height = 720, scale = 2, units = "px", device ='tiff', dpi = 300)
