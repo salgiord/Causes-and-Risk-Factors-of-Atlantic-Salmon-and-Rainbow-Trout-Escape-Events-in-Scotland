@@ -9,3 +9,17 @@ formula(back_severe)
 summary(back_severe)
 exp(confint(back_severe))
 exp(coef(back_severe))
+
+step1 <- glm(severe ~ grey_seal +
+      harb_seal +
+      fetch +
+      max_gust_msec, family="binomial", data = new_severe)
+step2 <- glm(severe ~ grey_seal +
+               harb_seal +
+               max_gust_msec, family="binomial", data = new_severe)
+step3 <- glm(severe ~ grey_seal +
+               max_gust_msec, family="binomial", data = new_severe)
+step4 <- glm(severe ~ 
+               max_gust_msec, family="binomial", data = new_severe)
+
+anova(step1, step2, step3, step4, test="LRT")
